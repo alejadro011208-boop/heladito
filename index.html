@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Un helado conmigo? 🍦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crema: #fff6e9;
+    --fresa: #ffb3c6;
+    --fresa-fuerte: #ff7fa3;
+    --menta: #b8ead5;
+    --menta-fuerte: #6fcfa6;
+    --cacao: #6b4a4f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Fredoka', 'Trebuchet MS', sans-serif;
+    color: var(--cacao);
+    background:
+      radial-gradient(circle at 15% 20%, var(--fresa) 0, transparent 38%),
+      radial-gradient(circle at 85% 80%, var(--menta) 0, transparent 40%),
+      var(--crema);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 20px;
+    overflow: hidden;
+  }
+  .card {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    background: rgba(255, 255, 255, .78);
+    border-radius: 36px;
+    padding: 40px 28px 44px;
+    text-align: center;
+    box-shadow: 0 18px 50px rgba(255, 127, 163, .25);
+    backdrop-filter: blur(6px);
+  }
+  .cono { font-size: 72px; line-height: 1; display: inline-block; animation: balanceo 3s ease-in-out infinite; }
+  @keyframes balanceo { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+  h1 {
+    font-family: 'Pacifico', cursive;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 6vw, 2.3rem);
+    line-height: 1.35;
+    margin: 18px 0 30px;
+  }
+  .botones {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 90px;
+    flex-wrap: wrap;
+  }
+  button {
+    font-family: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, left .25s ease, top .25s ease;
+  }
+  button:focus-visible { outline: 3px solid var(--cacao); outline-offset: 3px; }
+  #si {
+    font-size: 1.1rem;
+    padding: 14px 28px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--fresa-fuerte), #ff9ab5);
+    box-shadow: 0 8px 20px rgba(255, 127, 163, .45);
+    transform-origin: center;
+  }
+  #si:hover { box-shadow: 0 10px 26px rgba(255, 127, 163, .65); }
+  #no {
+    font-size: 1rem;
+    padding: 12px 24px;
+    color: var(--cacao);
+    background: var(--menta);
+    box-shadow: 0 6px 16px rgba(111, 207, 166, .4);
+    white-space: nowrap;
+    z-index: 5;
+  }
+  #no.huyendo { position: fixed; }
+
+  .final { display: none; }
+  .final h2 {
+    font-family: 'Pacifico', cursive;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 5.5vw, 2rem);
+    line-height: 1.45;
+    margin: 10px 0 18px;
+  }
+  .final p { font-size: 1.1rem; line-height: 1.6; }
+  .helados { font-size: 2.6rem; margin-top: 22px; letter-spacing: 6px; }
+  .helados span { display: inline-block; animation: salto 1.4s ease-in-out infinite; }
+  .helados span:nth-child(2) { animation-delay: .15s; }
+  .helados span:nth-child(3) { animation-delay: .3s; }
+  .helados span:nth-child(4) { animation-delay: .45s; }
+  .helados span:nth-child(5) { animation-delay: .6s; }
+  @keyframes salto { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+  .aceptado .pregunta { display: none; }
+  .aceptado .final { display: block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cono, .helados span { animation: none; }
+    button { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <main class="card" id="tarjeta">
+    <section class="pregunta">
+      <div class="cono" aria-hidden="true">🍦</div>
+      <h1>¿Aceptas ir por un helado conmigo algún día? 🍦✨</h1>
+      <div class="botones" id="botones">
+        <button id="si" type="button">¡Obvio que sí! 🍦</button>
+        <button id="no" type="button">No</button>
+      </div>
+    </section>
+
+    <section class="final" aria-live="polite">
+      <div class="cono" aria-hidden="true">🍨</div>
+      <h2>¡Sabía que no te podías negar a un helado! 🍦✨</h2>
+      <p>Ya me pongo en contacto contigo para elegir el lugar y la hora.</p>
+      <div class="helados" aria-hidden="true">
+        <span>🍦</span><span>🍧</span><span>🍨</span><span>🍓</span><span>🍦</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script>
+    // ====== CONFIGURACIÓN ======
+    const NTFY_TOPIC = 'helado-alejandro-x7k29q';
+    // ===========================
+
+    const tarjeta = document.getElementById('tarjeta');
+    const btnSi = document.getElementById('si');
+    const btnNo = document.getElementById('no');
+
+    const frases = [
+      '¿Segura?',
+      '¡El helado no se rechaza!',
+      'Pénsalo bien...',
+      'Inténtalo de nuevo 😜',
+      '¿Ni con topping extra?',
+      'Mira que invito yo 🍓',
+      'Ese botón no funciona 🙈'
+    ];
+
+    let intentos = 0;
+    let escala = 1;
+
+    // Envía un aviso a tu celular (app ntfy). Si falla, la página sigue funcionando igual.
+    function avisar(mensaje) {
+      try {
+        fetch('https://ntfy.sh/' + NTFY_TOPIC, { method: 'POST', body: mensaje });
+      } catch (e) { /* silencio */ }
+    }
+
+    // Aviso cuando abre la página (una sola vez por sesión)
+    if (!sessionStorage.getItem('visto')) {
+      sessionStorage.setItem('visto', '1');
+      avisar('👀 Acaba de abrir tu invitación al helado');
+    }
+
+    function esquivar(e) {
+      if (e) e.preventDefault();
+      intentos++;
+
+      // El "Sí" crece un poquito cada vez (con tope)
+      escala = Math.min(escala + 0.12, 2.2);
+      btnSi.style.transform = 'scale(' + escala + ')';
+
+      // El "No" cambia de texto
+      btnNo.textContent = frases[(intentos - 1) % frases.length];
+
+      // Y se mueve a una posición aleatoria de la pantalla
+      btnNo.classList.add('huyendo');
+      const margen = 12;
+      const maxX = Math.max(margen, window.innerWidth - btnNo.offsetWidth - margen);
+      const maxY = Math.max(margen, window.innerHeight - btnNo.offsetHeight - margen);
+      btnNo.style.left = (margen + Math.random() * (maxX - margen)) + 'px';
+      btnNo.style.top = (margen + Math.random() * (maxY - margen)) + 'px';
+
+      // Avisos divertidos en intentos clave
+      if (intentos === 1 || intentos === 5 || intentos === 10) {
+        avisar('😜 Ya intentó darle al "No" ' + intentos + ' vez/veces');
+      }
+    }
+
+    btnNo.addEventListener('mouseenter', esquivar);
+    btnNo.addEventListener('touchstart', esquivar, { passive: false });
+    btnNo.addEventListener('click', esquivar);
+
+    function lluviaConfeti() {
+      const colores = ['#ff7fa3', '#ffb3c6', '#b8ead5', '#6fcfa6', '#fff1b8'];
+      confetti({ particleCount: 140, spread: 80, origin: { y: 0.6 }, colors: colores });
+      const fin = Date.now() + 2500;
+      (function lado() {
+        confetti({ particleCount: 4, angle: 60, spread: 60, origin: { x: 0 }, colors: colores });
+        confetti({ particleCount: 4, angle: 120, spread: 60, origin: { x: 1 }, colors: colores });
+        if (Date.now() < fin) requestAnimationFrame(lado);
+      })();
+    }
+
+    btnSi.addEventListener('click', () => {
+      btnNo.style.display = 'none';
+      tarjeta.classList.add('aceptado');
+      if (window.confetti) lluviaConfeti();
+      avisar('🍦🎉 ¡DIJO QUE SÍ! (tras ' + intentos + ' intentos con el "No")');
+    });
+  </script>
+</body>
+</html>
